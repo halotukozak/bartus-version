@@ -15,7 +15,6 @@ jobs:
           java-version: 21
           distribution: 'temurin'
 
-      - name: Publish artifacts
       - run: ./mill mill.scalalib.PublishModule/
         env:
           MILL_PGP_PASSPHRASE: ${{ secrets.MILL_PGP_PASSPHRASE }}
