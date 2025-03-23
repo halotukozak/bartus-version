@@ -1,0 +1,46 @@
+package build
+
+import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
+
+
+import mill._
+import mill.main.BuildInfo.millVersion
+import mill.scalalib._
+import mill.scalalib.publish._
+import mill.contrib.scoverage.ScoverageModule
+
+object `package` extends RootModule with ScalaModule with ScoverageModule with PublishModule {
+  def scalaVersion = "2.13.16"
+
+  def scoverageVersion = "2.3.0"
+
+  def platformSuffix = "_mill" + mill.main.BuildInfo.millBinPlatform
+
+  def ivyDeps = Agg(
+    ivy"com.lihaoyi:mill-dist:$millVersion",
+    ivy"org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r",
+  )
+
+  object test extends ScalaTests with TestModule.Utest with ScoverageTests {
+    def ivyDeps = Agg(ivy"com.lihaoyi::mill-testkit:$millVersion")
+
+    def forkEnv = Map("MILL_EXECUTABLE_PATH" -> millExecutable.assembly().path.toString)
+
+    object millExecutable extends JavaModule {
+      def ivyDeps = Agg(ivy"com.lihaoyi:mill-dist:$millVersion")
+
+      def mainClass = Some("mill.runner.client.MillClientMain")
+    }
+  }
+
+  def publishVersion = "v0.0.1"
+
+  def pomSettings = PomSettings(
+    description = "Another git version plugin for Mill build tool.",
+    organization = "com.halotukozak",
+    url = "https://github.com/halotukozak/bartus-version",
+    licenses = Seq(License.MIT),
+    versionControl = VersionControl.github("halotukozak", "bartus-version"),
+    developers = Seq(Developer("halotukozak", "Bartłomiej Kozak", "https://github.com/halotukozak")),
+  )
+}
