@@ -2,7 +2,6 @@ package build
 
 import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
 
-
 import mill._
 import mill.main.BuildInfo.millVersion
 import mill.scalalib._
@@ -37,7 +36,7 @@ object `package` extends RootModule with ScalaModule with ScoverageModule with P
 
   def pomSettings = PomSettings(
     description = "Another git version plugin for Mill build tool.",
-    organization = "com.halotukozak",
+    organization = "io.github.halotukozak",
     url = "https://github.com/halotukozak/bartus-version",
     licenses = Seq(License.MIT),
     versionControl = VersionControl.github("halotukozak", "bartus-version"),

@@ -1,4 +1,4 @@
-package com.halotukozak.bartusVersion
+package io.github.halotukozak.bartusVersion
 
 import mill._
 import mill.api.Result

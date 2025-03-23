@@ -1,4 +1,4 @@
-package com.halotukozak.bartusVersion
+package io.github.halotukozak.bartusVersion
 
 import upickle.default._
 
