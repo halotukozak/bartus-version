@@ -36,14 +36,12 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin'
-      - name: Preparation
-        run: ./mill clean
 
       - name: Release new tag
-        run: ./mill setNextVersion --bump ${{ github.event.inputs.BUMP  }}
+        run: ./mill --no-server setNextVersion --bump ${{ github.event.inputs.BUMP  }}
 
       - name: Publish to Maven Central
-        run: ./mill publishSonatypeCentral
+        run: ./mill --no-server publishSonatypeCentral
         env:
           MILL_PGP_PASSPHRASE: ${{ secrets.MILL_PGP_PASSPHRASE }}
           MILL_PGP_SECRET_BASE64: ${{ secrets.MILL_PGP_SECRET_BASE64 }}

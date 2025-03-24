@@ -27,13 +27,13 @@ jobs:
           distribution: 'temurin'
 
       - name: Compile
-        run: ./mill compile
+        run: ./mill --no-server compile
 
       - name: Run tests
-        run: ./mill test
+        run: ./mill --no-server test
 
       - name: Code coverage
-        run: ./mill scoverage.xmlCoberturaReport
+        run: ./mill --no-server scoverage.xmlCoberturaReport
 
       - name: Code Coverage Report
         uses: 5monkeys/cobertura-action@master
