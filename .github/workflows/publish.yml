@@ -40,6 +40,17 @@ jobs:
           java-version: 21
           distribution: 'temurin'
 
+      - name: Get mill version
+        run: |
+          MILL_VERSION=$(cat .mill-version)
+          echo "MILL_VERSION=$MILL_VERSION"
+
+      - name: Cache mill
+        uses: actions/cache@v4
+        with:
+          key: $MILL_VERSION
+          path: "out/mill-launcher/$MILL_VERSION.jar"
+
       - name: Release new tag
         run: ./mill --no-server setNextVersion --bump ${{ github.event.inputs.BUMP  }}
 
