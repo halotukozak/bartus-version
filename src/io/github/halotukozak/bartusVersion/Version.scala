@@ -18,15 +18,15 @@ final case class Version(major: Int, minor: Int, patch: Int, distance: Option[In
     this.copy(distance = distance, suffix = s"-${hash.take(hashLength)}-SNAPSHOT")
 
   override def toString: String = {
-    val version = s"v$major.$minor.$patch"
+    val version = s"$major.$minor.$patch"
     val distanceStr = distance.fold("")(d => s"-$d")
     version + distanceStr + suffix
   }
 }
 
 object Version {
-  private final val releaseRegex = """^v(\d+)\.(\d+)\.(\d+)$""".r
-  private final val snapshotRegex = """^v(\d+)\.(\d+)\.(\d+)(?:-(\d+)-([\da-f]+)-SNAPSHOT)?$""".r
+  private final val releaseRegex = """^v?(\d+)\.(\d+)\.(\d+)$""".r
+  private final val snapshotRegex = """^v?(\d+)\.(\d+)\.(\d+)(?:-(\d+)-([\da-f]+)-SNAPSHOT)?$""".r
 
   final val hashLength: Int = 7
 

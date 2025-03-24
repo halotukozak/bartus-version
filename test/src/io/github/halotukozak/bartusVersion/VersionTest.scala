@@ -73,19 +73,19 @@ object VersionTest extends TestSuite {
       "produce correct string representations" - {
         "Release version" - {
           "format correctly" - {
-            Version(1, 2, 3).toString ==> "v1.2.3"
+            Version(1, 2, 3).toString ==> "1.2.3"
           }
         }
 
         "Snapshot version" - {
           "format with distance" - {
             Version(1, 2, 3, Some(5), "-abc123-SNAPSHOT")
-              .toString ==> "v1.2.3-5-abc123-SNAPSHOT"
+              .toString ==> "1.2.3-5-abc123-SNAPSHOT"
           }
 
           "format without distance" - {
             Version(1, 2, 3, None, "-def456-SNAPSHOT")
-              .toString ==> "v1.2.3-def456-SNAPSHOT"
+              .toString ==> "1.2.3-def456-SNAPSHOT"
           }
         }
       }
@@ -110,7 +110,7 @@ object VersionTest extends TestSuite {
 
         "Invalid versions" - {
           "throw exceptions" - {
-            List("1.2.3", "v1.2", "v1.2.3-SNAPSHOT", "v1.2.x").foreach { invalid =>
+            List("g1.2.3", "v1.2", "v1.2.3-SNAPSHOT", "v1.2.x").foreach { invalid =>
               intercept[Exception] {
                 val _ = Version.of(invalid)
               }
