@@ -43,11 +43,6 @@ jobs:
       - name: Get mill version
         run: |
           MILL_VERSION=$(cat .mill-version)
-          echo "MILL_VERSION=$MILL_VERSION"
-
-      - name: Get mill version
-        run: |
-          MILL_VERSION=$(cat .mill-version)
           echo "MILL_VERSION=$(cat .mill-version)" >> $GITHUB_ENV
 
       - name: Cache mill

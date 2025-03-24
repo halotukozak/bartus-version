@@ -69,7 +69,10 @@ object `package`
 
   //todo: remove after the v0.0.4 release
   protected def setVersionTask(version: Task[Version]) = Task.Anon {
-    super.setVersionTask(version)()
+    T.log.info(s"Setting release version to ${version()}")
+    val tagName = s"v${version()}"
+    val git = Git.open(workspace.toIO)
+    git.tag().setAnnotated(true).setName(tagName).call()
     Git.open(workspace.toIO).push().setPushTags().call()
     ()
   }

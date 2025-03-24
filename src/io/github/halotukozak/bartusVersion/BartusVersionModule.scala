@@ -63,7 +63,7 @@ trait BartusVersionModule extends Module {
     ()
   }
 
-  private def git = Task.Anon {
+  private def git = Task.Input {
     Git.open(workspace.toIO)
   }
 
