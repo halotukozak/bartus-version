@@ -25,7 +25,7 @@ jobs:
           java-version: 21
           distribution: 'temurin'
 
-      - run: ./mill mill.contrib.sonatypecentral.SonatypeCentralPublishModule/publishAll
+      - run: ./mill publishSonatypeCentral
         env:
           MILL_PGP_PASSPHRASE: ${{ secrets.MILL_PGP_PASSPHRASE }}
           MILL_PGP_SECRET_BASE64: ${{ secrets.MILL_PGP_SECRET_BASE64 }}

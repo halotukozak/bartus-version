@@ -1,10 +1,10 @@
 package io.github.halotukozak.bartusVersion
 
-import upickle.default._
+import upickle.default.*
 
 final case class Version(major: Int, minor: Int, patch: Int, distance: Option[Int] = None, suffix: String = "") {
 
-  import Version._
+  import Version.*
 
   def bump(segment: String): Version = segment match {
     case _ if suffix != "" => throw new RuntimeException("Cannot bump a snapshot version")

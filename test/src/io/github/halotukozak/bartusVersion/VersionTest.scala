@@ -1,7 +1,7 @@
 package io.github.halotukozak.bartusVersion
 
-import upickle.default._
-import utest._
+import upickle.default.*
+import utest.*
 
 object VersionTest extends TestSuite {
   def tests: Tests = Tests {

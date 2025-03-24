@@ -1,19 +1,19 @@
 package io.github.halotukozak.bartusVersion
 
-import mill._
+import mill.*
 import mill.api.Result
 import mill.api.Result.OuterStack
 import mill.define.Command
 import mill.define.Task.workspace
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.RepositoryBuilder
-import upickle.default._
+import upickle.default.*
 
 import scala.util.{Success, Try}
 
 trait BartusVersionModule extends Module {
 
-  import Version._
+  import Version.*
 
   /** Main branch to release */
   def mainBranch: T[String] = "main"

@@ -8,23 +8,17 @@ import $ivy.`org.typelevel::scalac-options:0.1.7`
 import mill._
 import mill.scalalib._
 import mill.scalalib.publish._
-import mill.contrib.scoverage.{ScoverageModule, ScoverageReport}
+import mill.contrib.scoverage._
 import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
-import mill.define.Cross
 import mill.scalalib.publish.{Developer, License, PomSettings, VersionControl}
 import mill.scalalib.api.ZincWorkerUtil.scalaNativeBinaryVersion
 import org.typelevel.scalacoptions.ScalacOptions._
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
 
-object bartusVersion extends Cross[CrossBartusVersion]("0.12.9" /*, "0.13.0-M0-95-606de3"*/)
+object `package` extends RootModule with ScalaModule with ScoverageModule with SonatypeCentralPublishModule {
+  val millVersion = "0.12.9"
 
-trait CrossBartusVersion extends Cross.Module[String] with ScalaModule with ScoverageModule with SonatypeCentralPublishModule {
-  val millVersion = crossValue
-
-  def scalaVersion = millVersion match {
-    case millVersion if millVersion.startsWith("0.12") => "2.13.16"
-    case millVersion if millVersion.startsWith("0.13") => "3.6.3"
-  }
+  def scalaVersion = "2.13.16"
 
   override def scalacOptions = super.scalacOptions() ++ ScalacOptions.tokensForVersion(
     ScalaVersion.unsafeFromString(scalaVersion()),
@@ -66,10 +60,4 @@ trait CrossBartusVersion extends Cross.Module[String] with ScalaModule with Scov
     versionControl = VersionControl.github("halotukozak", "bartus-version"),
     developers = Seq(Developer("halotukozak", "Bartłomiej Kozak", "https://github.com/halotukozak")),
   )
-}
-
-object scoverage extends ScoverageReport {
-  override def scalaVersion: T[String] = "2.13.16"
-
-  override def scoverageVersion: T[String] = "2.3.0"
 }
