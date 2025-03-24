@@ -20,8 +20,9 @@ trait BartusVersionModule extends Module {
 
   /** The current version obtained from git. */
   def currentVersion: T[Version] = Task {
+    val git = Git.open(workspace.toIO)
     val description =
-      git().describe().setTarget(mainBranch()).setTags(true).setMatch("v[0-9]*").setAlways(true).setAbbrev(0).call()
+      git.describe().setTarget(mainBranch()).setTags(true).setMatch("v[0-9]*").setAlways(true).setAbbrev(0).call()
 
     Try(Version.of(description)) match {
       case Success(version) => Result.Success(version)
@@ -51,31 +52,30 @@ trait BartusVersionModule extends Module {
     setVersionTask(Task.Anon(Version(0, 0, 0)))
 
   protected def isMainBranch: T[Boolean] = Task.Input {
-    val branch = git().getRepository.getBranch
+    val git = Git.open(workspace.toIO)
+    val branch = git.getRepository.getBranch
     branch == mainBranch()
   }
 
   protected def setVersionTask(version: Task[Version]) = Task.Anon {
     T.log.info(generateCommitMessage(version()))
     val tagName = s"v${version()}"
-    git().tag().setAnnotated(true).setName(tagName).call()
-    git().push().setPushTags().call()
+    val git = Git.open(workspace.toIO)
+    git.tag().setAnnotated(true).setName(tagName).call()
+    git.push().setPushTags().call()
     ()
-  }
-
-  private def git = Task.Input {
-    Git.open(workspace.toIO)
   }
 
   private def uncommittedHash = Task.Anon {
     val indexCopy = os.temp.dir() / "index"
     val _ = Try(os.copy(os.pwd / ".git" / "index", indexCopy, replaceExisting = true, createFolders = true))
 
+    val git = Git.open(workspace.toIO)
     // Use different index file to avoid messing up current git status
     val altGit = Git.wrap(
       new RepositoryBuilder()
-        .setFS(git().getRepository.getFS)
-        .setGitDir(git().getRepository.getDirectory)
+        .setFS(git.getRepository.getFS)
+        .setGitDir(git.getRepository.getDirectory)
         .setIndexFile(indexCopy.toIO)
         .build(),
     )
