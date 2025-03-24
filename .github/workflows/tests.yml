@@ -33,11 +33,11 @@ jobs:
         run: ./mill __.test
 
       - name: Code coverage
-        run: ./mill scoverage.xmlCoberturaReport
+        run: ./mill scoverage.xmlCoberturaReportAll
 
       - name: Code Coverage Report
         uses: 5monkeys/cobertura-action@master
         with:
-          path: out/scoverage/xmlCoberturaReport.dest/cobertura.xml
+          path: out/scoverage/xmlCoberturaReportAll.dest/cobertura.xml
           minimum_coverage: 60
           fail_below_threshold: 'true'

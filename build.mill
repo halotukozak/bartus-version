@@ -8,7 +8,7 @@ import $ivy.`org.typelevel::scalac-options:0.1.7`
 import mill._
 import mill.scalalib._
 import mill.scalalib.publish._
-import mill.contrib.scoverage.ScoverageModule
+import mill.contrib.scoverage.{ScoverageModule, ScoverageReport}
 import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
 import mill.define.Cross
 import mill.scalalib.publish.{Developer, License, PomSettings, VersionControl}
@@ -66,4 +66,10 @@ trait CrossBartusVersion extends Cross.Module[String] with ScalaModule with Scov
     versionControl = VersionControl.github("halotukozak", "bartus-version"),
     developers = Seq(Developer("halotukozak", "Bartłomiej Kozak", "https://github.com/halotukozak")),
   )
+}
+
+object scoverage extends ScoverageReport {
+  override def scalaVersion: T[String] = "2.13.16"
+
+  override def scoverageVersion: T[String] = "2.3.0"
 }
