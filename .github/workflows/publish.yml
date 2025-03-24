@@ -15,8 +15,18 @@ on:
           - minor
           - patch
 jobs:
+  #  todo: enable after the v0.0.4 release
+  #  test:
+  #    uses: ./.github/workflows/tests.yml
+  #    permissions:
+  #      actions: read
+  #      contents: read
+  #      packages: read
+  #      pull-requests: write
+  #      checks: write
+  #      issues: write
   publish:
-    needs: test
+    #    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -51,15 +61,3 @@ jobs:
           MILL_PGP_SECRET_BASE64: ${{ secrets.MILL_PGP_SECRET_BASE64 }}
           MILL_SONATYPE_PASSWORD: ${{ secrets.MILL_SONATYPE_PASSWORD }}
           MILL_SONATYPE_USERNAME: ${{ secrets.MILL_SONATYPE_USERNAME }}
-
-
-  #  todo: add after the v0.0.4 release
-  #  test:
-  #    uses: ./.github/workflows/tests.yml
-  #    permissions:
-  #      actions: read
-  #      contents: read
-  #      packages: read
-  #      pull-requests: write
-  #      checks: write
-  #      issues: write
