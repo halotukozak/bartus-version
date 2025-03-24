@@ -4,16 +4,18 @@ import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
 import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
 import $ivy.`org.typelevel::scalac-options:0.1.7`
 import $ivy.`io.github.halotukozak::bartus-version::0.0.3`
+
+import io.github.halotukozak.bartusVersion.{BartusVersionModule, Version}
 import mill._
-import mill.scalalib._
-import mill.scalalib.publish._
 import mill.contrib.scoverage._
 import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
-import mill.scalalib.publish.{Developer, License, PomSettings, VersionControl}
+import mill.define.Task.workspace
+import mill.main.BuildInfo.{millBinPlatform, millVersion}
+import mill.scalalib._
+import mill.scalalib.publish._
+import org.eclipse.jgit.api.Git
 import org.typelevel.scalacoptions.ScalacOptions._
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
-import io.github.halotukozak.bartusVersion.BartusVersionModule
-import mill.main.BuildInfo.{millBinPlatform, millVersion}
 
 object `package`
   extends RootModule
@@ -64,4 +66,11 @@ object `package`
   )
 
   def versionScheme = Some(VersionScheme.EarlySemVer)
+
+  //todo: remove after the v0.0.4 release
+  protected def setVersionTask(version: Task[Version]) = Task.Anon {
+    super.setVersionTask(version)()
+    Git.open(workspace.toIO).push().setPushTags().call()
+    ()
+  }
 }
