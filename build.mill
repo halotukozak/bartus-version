@@ -3,7 +3,7 @@ package build
 import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
 import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
 import $ivy.`org.typelevel::scalac-options:0.1.7`
-//import $ivy.`io.github.halotukozak:bartus-version::0.0.3`
+import $ivy.`io.github.halotukozak::bartus-version::0.0.3`
 import mill._
 import mill.scalalib._
 import mill.scalalib.publish._
@@ -12,7 +12,7 @@ import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
 import mill.scalalib.publish.{Developer, License, PomSettings, VersionControl}
 import org.typelevel.scalacoptions.ScalacOptions._
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
-//import io.github.halotukozak.bartusVersion.BartusVersionModule
+import io.github.halotukozak.bartusVersion.BartusVersionModule
 import mill.main.BuildInfo.{millBinPlatform, millVersion}
 
 object `package`
@@ -20,8 +20,8 @@ object `package`
     with ScalaModule
     with ScoverageModule
     with SonatypeCentralPublishModule
-//    with BartusVersionModule
-    {
+    with BartusVersionModule {
+
   def scalaVersion = "2.13.16"
 
   override def scalacOptions = super.scalacOptions() ++ ScalacOptions.tokensForVersion(
@@ -53,7 +53,7 @@ object `package`
   }
 
   def artifactName = "bartus-version"
-  def publishVersion = "0.0.3"
+
   def pomSettings = PomSettings(
     description = "Another git version plugin for Mill build tool.",
     organization = "io.github.halotukozak",

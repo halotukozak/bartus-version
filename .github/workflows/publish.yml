@@ -4,6 +4,16 @@ on:
     tags:
       - '**'
   workflow_dispatch:
+    inputs:
+      BUMP:
+        description: 'Version bump type (major, minor, patch)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 jobs:
   tests:
     uses: ./.github/workflows/tests.yml
@@ -24,8 +34,11 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin'
+      - name: Release new tag
+        run: ./mill setNextVersion --bump ${{ github.event.inputs.BUMP  }}
 
-      - run: ./mill publishSonatypeCentral
+      - name: Publish to Maven Central
+        run: ./mill publishSonatypeCentral
         env:
           MILL_PGP_PASSPHRASE: ${{ secrets.MILL_PGP_PASSPHRASE }}
           MILL_PGP_SECRET_BASE64: ${{ secrets.MILL_PGP_SECRET_BASE64 }}
