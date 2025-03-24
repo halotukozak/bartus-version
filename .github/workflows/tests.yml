@@ -38,6 +38,6 @@ jobs:
       - name: Code Coverage Report
         uses: 5monkeys/cobertura-action@master
         with:
-          path: out/scoverage/xmlCoberturaReportAll.dest/cobertura.xml
+          path: out/scoverage/xmlCoberturaReport.dest/cobertura.xml
           minimum_coverage: 60
           fail_below_threshold: 'true'
