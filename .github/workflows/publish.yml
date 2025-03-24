@@ -15,7 +15,7 @@ on:
           - minor
           - patch
 jobs:
-  tests:
+  test:
     uses: ./.github/workflows/tests.yml
     permissions:
       actions: read
@@ -24,8 +24,9 @@ jobs:
       pull-requests: write
       checks: write
       issues: write
-  publish-artifacts:
-    needs: tests
+
+  publish:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

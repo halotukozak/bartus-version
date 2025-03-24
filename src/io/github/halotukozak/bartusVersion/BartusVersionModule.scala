@@ -59,7 +59,7 @@ trait BartusVersionModule extends Module {
     T.log.info(generateCommitMessage(version()))
     val tagName = s"v${version()}"
     git().tag().setAnnotated(true).setName(tagName).call()
-    git().push()
+    git().push().setPushTags().call()
     ()
   }
 
