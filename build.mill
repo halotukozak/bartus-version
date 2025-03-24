@@ -1,14 +1,16 @@
 package build
 
 import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
+import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
 
 import mill._
 import mill.main.BuildInfo.millVersion
 import mill.scalalib._
 import mill.scalalib.publish._
 import mill.contrib.scoverage.ScoverageModule
+import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
 
-object `package` extends RootModule with ScalaModule with ScoverageModule with PublishModule {
+object `package` extends RootModule with ScalaModule with ScoverageModule with SonatypeCentralPublishModule {
   def scalaVersion = "2.13.16"
 
   def scoverageVersion = "2.3.0"
@@ -42,7 +44,4 @@ object `package` extends RootModule with ScalaModule with ScoverageModule with P
     versionControl = VersionControl.github("halotukozak", "bartus-version"),
     developers = Seq(Developer("halotukozak", "Bartłomiej Kozak", "https://github.com/halotukozak")),
   )
-
-  def sonatypeUri = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-  def sonatypeSnapshotUri = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
 }
