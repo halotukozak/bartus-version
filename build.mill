@@ -3,7 +3,7 @@ package build
 import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
 import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
 import $ivy.`org.typelevel::scalac-options:0.1.7`
-import $ivy.`io.github.halotukozak::bartus-version::0.0.3`
+import $ivy.`io.github.halotukozak::bartus-version::0.0.4`
 import io.github.halotukozak.bartusVersion.{BartusVersionModule, Version}
 import mill._
 import mill.contrib.scoverage._
@@ -65,24 +65,4 @@ object `package`
   )
 
   def versionScheme = Some(VersionScheme.EarlySemVer)
-
-  //todo: remove after the v0.0.4 release
-  protected def setVersionTask(version: Task[Version]) = Task.Anon {
-    T.log.info(s"Setting release version to ${version()}")
-    val tagName = s"v${version()}"
-    val git = Git.open(workspace.toIO)
-    git.tag().setAnnotated(true).setName(tagName).call()
-    git.push().setPushTags().call()
-    ()
-  }
-
-  //todo: remove after the v0.0.4 release
-  def publishVersion = Task.Input {
-    val description =
-      Git.open(workspace.toIO).describe().setTarget(mainBranch()).setTags(true).setMatch("v[0-9]*").setAlways(true).setAbbrev(0).call()
-
-    val version = Version.of(description).toString()
-    require(version == "0.0.4", "This task is only for the v0.0.4 release.")
-    version
-  }
 }

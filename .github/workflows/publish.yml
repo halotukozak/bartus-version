@@ -15,18 +15,17 @@ on:
           - minor
           - patch
 jobs:
-  #  todo: enable after the v0.0.4 release
-  #  test:
-  #    uses: ./.github/workflows/tests.yml
-  #    permissions:
-  #      actions: read
-  #      contents: read
-  #      packages: read
-  #      pull-requests: write
-  #      checks: write
-  #      issues: write
+  test:
+    uses: ./.github/workflows/tests.yml
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      pull-requests: write
+      checks: write
+      issues: write
   publish:
-    #    needs: test
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: write
