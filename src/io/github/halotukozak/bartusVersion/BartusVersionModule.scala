@@ -1,5 +1,10 @@
 package io.github.halotukozak.bartusVersion
 
+import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
+import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
+import $ivy.`org.typelevel::scalac-options:0.1.7`
+import $ivy.`io.github.halotukozak::bartus-version::0.0.3`
+
 import mill.*
 import mill.api.Result
 import mill.api.Result.OuterStack
