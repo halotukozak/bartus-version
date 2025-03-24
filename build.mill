@@ -83,5 +83,6 @@ object `package`
 
     val version = Version.of(description).toString()
     require(version == "0.0.4", "This task is only for the v0.0.4 release.")
+    version
   }
 }
