@@ -1,14 +1,7 @@
 package build
 
-import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
-import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
-import $ivy.`org.typelevel::scalac-options:0.1.7`
-import $ivy.`io.github.halotukozak::bartus-version::0.0.3`
-
 import io.github.halotukozak.bartusVersion.{BartusVersionModule, Version}
 import mill._
-import mill.api.Result
-import mill.api.Result.OuterStack
 import mill.contrib.scoverage._
 import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
 import mill.define.Task.workspace
@@ -18,8 +11,6 @@ import mill.scalalib.publish._
 import org.eclipse.jgit.api.Git
 import org.typelevel.scalacoptions.ScalacOptions._
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
-
-import scala.util.{Success, Try}
 
 object `package`
   extends RootModule
@@ -77,21 +68,12 @@ object `package`
     val tagName = s"v${version()}"
     val git = Git.open(workspace.toIO)
     git.tag().setAnnotated(true).setName(tagName).call()
-    Git.open(workspace.toIO).push().setPushTags().call()
+    git.push().setPushTags().call()
     ()
   }
 
   //todo: remove after the v0.0.4 release
-  def currentVersion: T[Version] = Task {
-    val git = Git.open(workspace.toIO)
-    val description =
-      git.describe().setTarget(mainBranch()).setTags(true).setMatch("v[0-9]*").setAlways(true).setAbbrev(0).call()
-
-    Try(Version.of(description)) match {
-      case Success(version) => Result.Success(version)
-      case _ =>
-        val exception = new IllegalStateException(s"Unexpected git describe output: $description")
-        Result.Exception(exception, new OuterStack(exception.getStackTrace.toIndexedSeq))
-    }
+  def publishVersion = Task.Input {
+    currentVersion().toString()
   }
 }
