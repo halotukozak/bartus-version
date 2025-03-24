@@ -20,7 +20,6 @@ trait BartusVersionModule extends Module {
 
   /** The current version obtained from git. */
   def currentVersion: T[Version] = Task {
-    val status = git().status().call()
     val description =
       git().describe().setTarget(mainBranch()).setTags(true).setMatch("v[0-9]*").setAlways(true).setAbbrev(0).call()
 

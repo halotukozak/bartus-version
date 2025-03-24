@@ -30,7 +30,7 @@ object VersionTest extends TestSuite {
         "Invalid bump argument" - {
           "throw RuntimeException" - {
             intercept[RuntimeException] {
-              baseVersion.bump("invalid")
+              val _ = baseVersion.bump("invalid")
             }
           }
         }
@@ -38,7 +38,7 @@ object VersionTest extends TestSuite {
         "Bumping snapshot version" - {
           "throw RuntimeException" - {
             intercept[RuntimeException] {
-              baseVersion.bump("invalid")
+              val _ = baseVersion.bump("invalid")
             }
           }
         }
@@ -112,7 +112,7 @@ object VersionTest extends TestSuite {
           "throw exceptions" - {
             List("1.2.3", "v1.2", "v1.2.3-SNAPSHOT", "v1.2.x").foreach { invalid =>
               intercept[Exception] {
-                Version.of(invalid)
+                val _ = Version.of(invalid)
               }
             }
           }

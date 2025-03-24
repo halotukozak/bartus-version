@@ -27,10 +27,10 @@ jobs:
           distribution: 'temurin'
 
       - name: Compile
-        run: ./mill compile
+        run: ./mill __.compile
 
       - name: Run tests
-        run: ./mill test
+        run: ./mill __.test
 
       - name: Code coverage
         run: ./mill scoverage.xmlCoberturaReport

@@ -4,7 +4,7 @@ import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
 import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
 import $ivy.`org.typelevel::scalac-options:0.1.7`
 //import $ivy.`io.github.halotukozak::mill:`
-//
+
 import mill._
 import mill.scalalib._
 import mill.scalalib.publish._
@@ -12,10 +12,11 @@ import mill.contrib.scoverage.ScoverageModule
 import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
 import mill.define.Cross
 import mill.scalalib.publish.{Developer, License, PomSettings, VersionControl}
+import mill.scalalib.api.ZincWorkerUtil.scalaNativeBinaryVersion
 import org.typelevel.scalacoptions.ScalacOptions._
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
 
-object bartusVersion extends Cross[CrossBartusVersion]("0.12.9", "0.13.0-M0-95-606de3")
+object bartusVersion extends Cross[CrossBartusVersion]("0.12.9" /*, "0.13.0-M0-95-606de3"*/)
 
 trait CrossBartusVersion extends Cross.Module[String] with ScalaModule with ScoverageModule with SonatypeCentralPublishModule {
   val millVersion = crossValue
@@ -53,7 +54,7 @@ trait CrossBartusVersion extends Cross.Module[String] with ScalaModule with Scov
     }
   }
 
-  def artifactName = s"mill-git_mill${millBinaryVersion(millVersion)}"
+  def artifactName = s"bartus-version_mill${scalaNativeBinaryVersion(millVersion)}"
 
   def publishVersion = "v0.0.2"
 
@@ -65,10 +66,4 @@ trait CrossBartusVersion extends Cross.Module[String] with ScalaModule with Scov
     versionControl = VersionControl.github("halotukozak", "bartus-version"),
     developers = Seq(Developer("halotukozak", "Bartłomiej Kozak", "https://github.com/halotukozak")),
   )
-}
-
-def millBinaryVersion(millVersion: String) = millVersion match {
-  case version if version.startsWith("0.12") => "0.11" // 0.12.x is binary compatible with 0.11.x
-  case version if version.startsWith("0.13") => "0.13.0-M0"
-  case _ => throw new IllegalArgumentException(s"Unsupported Mill version: $millVersion")
 }
