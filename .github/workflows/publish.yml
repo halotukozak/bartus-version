@@ -36,6 +36,9 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin'
+      - name: Preparation
+        run: ./mill clean
+
       - name: Release new tag
         run: ./mill setNextVersion --bump ${{ github.event.inputs.BUMP  }}
 
