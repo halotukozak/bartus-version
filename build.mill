@@ -2,16 +2,33 @@ package build
 
 import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
 import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
-
+import $ivy.`org.typelevel::scalac-options:0.1.7`
+//import $ivy.`io.github.halotukozak::mill:`
+//
 import mill._
-import mill.main.BuildInfo.millVersion
 import mill.scalalib._
 import mill.scalalib.publish._
 import mill.contrib.scoverage.ScoverageModule
 import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
+import mill.define.Cross
+import mill.scalalib.publish.{Developer, License, PomSettings, VersionControl}
+import org.typelevel.scalacoptions.ScalacOptions._
+import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
 
-object `package` extends RootModule with ScalaModule with ScoverageModule with SonatypeCentralPublishModule {
-  def scalaVersion = "2.13.16"
+object bartusVersion extends Cross[CrossBartusVersion]("0.12.9", "0.13.0-M0-95-606de3")
+
+trait CrossBartusVersion extends Cross.Module[String] with ScalaModule with ScoverageModule with SonatypeCentralPublishModule {
+  val millVersion = crossValue
+
+  def scalaVersion = millVersion match {
+    case millVersion if millVersion.startsWith("0.12") => "2.13.16"
+    case millVersion if millVersion.startsWith("0.13") => "3.6.3"
+  }
+
+  override def scalacOptions = super.scalacOptions() ++ ScalacOptions.tokensForVersion(
+    ScalaVersion.unsafeFromString(scalaVersion()),
+    ScalacOptions.default + source3 ++ fatalWarningOptions,
+  )
 
   def scoverageVersion = "2.3.0"
 
@@ -23,7 +40,9 @@ object `package` extends RootModule with ScalaModule with ScoverageModule with S
   )
 
   object test extends ScalaTests with TestModule.Utest with ScoverageTests {
-    def ivyDeps = Agg(ivy"com.lihaoyi::mill-testkit:$millVersion")
+    def ivyDeps = Agg(
+      ivy"com.lihaoyi::mill-testkit:$millVersion",
+    )
 
     def forkEnv = Map("MILL_EXECUTABLE_PATH" -> millExecutable.assembly().path.toString)
 
@@ -34,7 +53,9 @@ object `package` extends RootModule with ScalaModule with ScoverageModule with S
     }
   }
 
-  def publishVersion = "v0.0.1"
+  def artifactName = s"mill-git_mill${millBinaryVersion(millVersion)}"
+
+  def publishVersion = "v0.0.2"
 
   def pomSettings = PomSettings(
     description = "Another git version plugin for Mill build tool.",
@@ -44,4 +65,10 @@ object `package` extends RootModule with ScalaModule with ScoverageModule with S
     versionControl = VersionControl.github("halotukozak", "bartus-version"),
     developers = Seq(Developer("halotukozak", "Bartłomiej Kozak", "https://github.com/halotukozak")),
   )
+}
+
+def millBinaryVersion(millVersion: String) = millVersion match {
+  case version if version.startsWith("0.12") => "0.11" // 0.12.x is binary compatible with 0.11.x
+  case version if version.startsWith("0.13") => "0.13.0-M0"
+  case _ => throw new IllegalArgumentException(s"Unsupported Mill version: $millVersion")
 }
