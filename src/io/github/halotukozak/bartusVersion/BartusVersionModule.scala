@@ -47,8 +47,9 @@ trait BartusVersionModule extends Module {
   }
 
   /** Set the initial version. */
-  def setInitialVersion: Task[Unit] =
-    setVersionTask(Task.Anon(Version(0, 0, 0)))
+  def setInitialVersion(): Command[Unit] = Task.Command{
+    setVersionTask(Task.Anon(Version(0, 0, 0)))()
+  }
 
   protected def isMainBranch: T[Boolean] = Task.Input {
     val branch = git().getRepository.getBranch

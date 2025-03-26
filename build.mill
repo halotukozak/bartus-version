@@ -1,5 +1,9 @@
 package build
 
+/** If your IDE "optimizes" these imports by removing them, go to the Settings > Editor > Code Style > Scala > Imports always marked as used
+ * and add `$ivy._`
+ */
+
 import $ivy.`com.lihaoyi::mill-contrib-scoverage:`
 import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
 import $ivy.`org.typelevel::scalac-options:0.1.7`
